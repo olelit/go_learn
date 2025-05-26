@@ -1,11 +1,9 @@
 FROM golang:latest
+
+COPY ../../src /app
 WORKDIR /app
-
-COPY /src .
-
 RUN go mod download
-
-RUN go build -o main
+RUN go build -o main ./app
 EXPOSE 8080
 
-ENTRYPOINT ["/app/main"]
+ENTRYPOINT ["./main"]
