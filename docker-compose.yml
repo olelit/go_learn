@@ -4,12 +4,30 @@ services:
     build:
       context: .
       dockerfile: ./docker/app/Dockerfile
+    depends_on:
+      - db
     ports:
       - "80:8080"
-#    volumes:
-#      - ./src:/app
     networks:
-      - go-production
+      - go_learn_local
+
+  db:
+    container_name: go_db_local
+    image: postgres:16
+    restart: unless-stopped
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_DB=go_local
+      - POSTGRES_USER=go_local
+      - POSTGRES_PASSWORD=go_local
+    volumes:
+      - go_pgdata:/var/lib/postgresql/data
+    networks:
+      - go_learn_local
 
 networks:
-  go-production:
+  go_learn_local:
+
+volumes:
+  go_pgdata:
